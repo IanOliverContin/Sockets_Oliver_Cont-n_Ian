@@ -1,17 +1,17 @@
-import { UserNotFound } from '@Core/User/domain/Errors/UserNotFound'
-import { UserRepository } from '@Core/User/domain/UserRepository'
-import { Id } from '@Core/User/domain/ValueObjects/Id'
+import { UserRepository } from "@Core/User/domain/UserRepository";
+import { Id } from "@Core/User/domain/ValueObjects/Id";
+import { UserNotFound } from "@Core/User/domain/Errors/UserNotFound";
 
 export class Deleter {
-  constructor (private readonly repository: UserRepository) {}
+    constructor(private readonly repository: UserRepository) { }
 
-  async run (id: Id) {
-    const user = await this.repository.find(id)
+    async run(id: Id): Promise<void> {
+        const user = await this.repository.find(id)
 
-    if (!user) throw new UserNotFound(id)
+        if (!user) throw new UserNotFound(id.valueOf())
 
-    const deletedUser = user.delete()
+        user.delete()
 
-    await this.repository.persist(deletedUser)
-  }
+        await this.repository.persist(user)
+    }
 }

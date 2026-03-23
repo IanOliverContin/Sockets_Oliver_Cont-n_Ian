@@ -1,12 +1,11 @@
-import { DomainError } from '@Shared/domain/Errors/DomainError'
-import { Id } from '../ValueObjects/Id'
+import { DomainError } from "@Shared/domain/Errors/DomainError";
 
 export class UserNotFound extends DomainError {
-  protected code = 'user-not-found'
-  protected message
+    protected code: string = 'user-not-found'
+    protected message: string
 
-  constructor (id: Id) {
-    super()
-    this.message = `A user with id ${id} wasn't found`
-  }
+    constructor(id: string) {
+        super()
+        this.message = `User with id ${id} not found`
+    }
 }

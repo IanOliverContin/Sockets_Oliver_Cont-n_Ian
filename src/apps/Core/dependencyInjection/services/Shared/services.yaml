@@ -34,3 +34,7 @@ services:
   Shared.TokenDecoder:
     arguments: ['@Shared.TokenDecoder.ConfigFactory']
     class: src/Contexts/Shared/infrastructure/TokenDecoder/JwtTokenDecoder
+
+  Shared.TokenGenerator:
+    arguments: ['@Shared.TokenDecoder.ConfigFactory']
+    class: src/Contexts/Shared/infrastructure/TokenGenerator/JwtTokenGenerator

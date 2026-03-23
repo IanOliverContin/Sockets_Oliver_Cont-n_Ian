@@ -1,12 +1,11 @@
-import { DomainError } from '@Shared/domain/Errors/DomainError'
-import { Id } from '../ValueObjects/Id'
+import { DomainError } from "@Shared/domain/Errors/DomainError";
 
 export class UserAlreadyExistsById extends DomainError {
-  protected code = 'user-already-exists'
-  protected message
+    protected code: string = 'user-already-exists-by-id'
+    protected message: string
 
-  constructor (id: Id) {
-    super()
-    this.message = `A user with id ${id} already exists`
-  }
+    constructor(id: string) {
+        super()
+        this.message = `User with id ${id} already exists`
+    }
 }

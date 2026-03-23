@@ -3,29 +3,32 @@ services:
     class: src/Contexts/Core/User/infrastructure/persistence/TypeOrmUserRepository
     arguments: ["@Shared.ORM.Connection"]
 
-  User.FindByCriteria.FinderByCriteria:
-    class: src/Contexts/Core/User/application/FindByCriteria/FinderByCriteria
-    arguments: ['@User.Repository']
+  # --- Find By Criteria ---
+  User.FindByCriteria.Finder:
+    class: src/Contexts/Core/User/application/FindByCriteria/Finder
+    arguments: ["@User.Repository"]
 
   User.FindByCriteria.FindUsersByCriteriaQueryHandler:
-    class: src/Contexts/Core/User/application/FindByCriteria/FindUsersByCriteriaQueryHandler
-    arguments: ['@User.FindByCriteria.FinderByCriteria']
+    class: src/Contexts/Core/User/application/FindByCriteria/FindUserByCriteriaQueryHandler
+    arguments: ["@User.FindByCriteria.Finder"]
     tags:
       - { name: "queryHandler" }
 
-  User.FindById.FinderById:
-    class: src/Contexts/Core/User/application/FindById/FinderById
-    arguments: ['@User.Repository']
+  # --- Find By Id ---
+  User.FindUserById.Finder:
+    class: src/Contexts/Core/User/application/FindUserById/Finder
+    arguments: ["@User.Repository"]
 
-  User.FindById.FindUserByIdQueryHandler:
-    class: src/Contexts/Core/User/application/FindById/FindUserByIdQueryHandler
-    arguments: ['@User.FindById.FinderById']
+  User.FindUserById.FindUserByIdQueryHandler:
+    class: src/Contexts/Core/User/application/FindUserById/FindUserByIdQueryHandler
+    arguments: ["@User.FindUserById.Finder"]
     tags:
       - { name: "queryHandler" }
 
+  # --- Create ---
   User.Create.Creator:
     class: src/Contexts/Core/User/application/Create/Creator
-    arguments: ['@User.Repository']
+    arguments: ["@User.Repository"]
 
   User.Create.CreateUserCommandHandler:
     class: src/Contexts/Core/User/application/Create/CreateUserCommandHandler
@@ -33,32 +36,57 @@ services:
     tags:
       - { name: "commandHandler" }
 
-  User.UpdateRole.Updater:
-    class: src/Contexts/Core/User/application/UpdateRole/Updater
-    arguments: ['@User.Repository']
-
-  User.UpdateRole.UpdateRoleCommandHandler:
-    class: src/Contexts/Core/User/application/UpdateRole/UpdateRoleCommandHandler
-    arguments: ["@User.UpdateRole.Updater"]
-    tags:
-      - { name: "commandHandler" }
-
+  # --- Delete ---
   User.Delete.Deleter:
     class: src/Contexts/Core/User/application/Delete/Deleter
-    arguments: ['@User.Repository']
+    arguments: ["@User.Repository"]
 
   User.Delete.DeleteUserCommandHandler:
-    class: src/Contexts/Core/User/application/Delete/DeleteUserCommandHandler
+    class: src/Contexts/Core/User/application/Delete/DeleteUserCommandHanlder
     arguments: ["@User.Delete.Deleter"]
     tags:
       - { name: "commandHandler" }
 
+  # --- Update Name ---
+  User.UpdateName.Updater:
+    class: src/Contexts/Core/User/application/UpdateName/Updater
+    arguments: ["@User.Repository"]
+
+  User.UpdateName.UpdateUserNameCommandHandler:
+    class: src/Contexts/Core/User/application/UpdateName/UpdateUserNameCommandHandler
+    arguments: ["@User.UpdateName.Updater"]
+    tags:
+      - { name: "commandHandler" }
+
+  # --- Update Password ---
   User.UpdatePassword.Updater:
     class: src/Contexts/Core/User/application/UpdatePassword/Updater
-    arguments: ['@User.Repository']
+    arguments: ["@User.Repository"]
 
-  User.UpdatePassword.UpdatePasswordCommandHandler:
-    class: src/Contexts/Core/User/application/UpdatePassword/UpdatePasswordCommandHandler
+  User.UpdatePassword.UpdateUserPasswordCommandHandler:
+    class: src/Contexts/Core/User/application/UpdatePassword/UpdateUserPasswordCommandHandler
     arguments: ["@User.UpdatePassword.Updater"]
     tags:
       - { name: "commandHandler" }
+
+  # --- Update Phone ---
+  User.UpdatePhone.Updater:
+    class: src/Contexts/Core/User/application/UpdatePhone/Updater
+    arguments: ["@User.Repository"]
+
+  User.UpdatePhone.UpdateUserPhoneCommandHandler:
+    class: src/Contexts/Core/User/application/UpdatePhone/UpdateUserPhoneCommandHanlder
+    arguments: ["@User.UpdatePhone.Updater"]
+    tags:
+      - { name: "commandHandler" }
+
+  # --- Login ---
+  User.Login:
+    class: src/Contexts/Core/User/application/Login/Login
+    arguments: ["@User.Repository", "@Shared.TokenGenerator"]
+
+  User.Login.LoginQueryHandler:
+    class: src/Contexts/Core/User/application/Login/LoginQueryHandler
+    arguments: ["@User.Login"]
+    tags:
+      - { name: "queryHandler" }

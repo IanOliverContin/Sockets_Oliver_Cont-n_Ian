@@ -1,0 +1,39 @@
+Chat
+
+El servidor ha de gestionar de manera eficient la connexió dels usuaris, les interaccions
+entre ells i la persistència de la informació. 
+
+Aquesta vegada, no només s’han de poder enviar i rebre missatges, sinó que també haureu de treballar amb nous esdeveniments que
+millorin l’experiència dins del canal i facin que el sistema sigui més complet i útil.
+
+Concretament, heu de desenvolupar la següent lògica:
+
+● Un usuari només es pot unir a un canal si realment té accés.
+
+● Quan entra en un canal, ha de rebre els últims missatges publicats recentment.
+
+● Els missatges que s’envien s’han de guardar correctament a la base de dades.
+
+● S’ha de validar tota la informació rebuda abans d’acceptar-la (format, camps
+obligatoris, etc.).
+
+● Quan un usuari es desconnecta o abandona el canal, s’ha de notificar als altres
+membres.
+
+● Quan un usuari està escrivint un missatge, els altres ho han de veure reflectit en
+temps real (“usuari està escrivint…”).
+
+● Quan un missatge és rebut i mostrat per un usuari, s’ha de confirmar que ha estat
+llegit, i el servidor ho ha de comunicar a l’autor del missatge.
+
+● Els usuaris han de poder reaccionar a un missatge (amb un “like” o una icona), i les
+reaccions han de ser visibles per a tots els membres del canal.
+
+● Ha de ser possible editar un missatge (només per l’autor), i quan això passi, el canvi
+ha de veure’s automàticament per a tothom.
+
+● També s’ha de poder eliminar un missatge, i aquesta acció ha de propagar-se a la
+resta d’usuaris connectats.
+
+● El sistema ha de controlar quants usuaris hi ha connectats en cada moment a cada
+canal, i aquesta informació ha d’estar disponible en temps real.

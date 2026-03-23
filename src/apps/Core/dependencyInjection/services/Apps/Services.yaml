@@ -1,32 +1,40 @@
 services:
-  Apps.Core.Controllers.RegisterPostController:
-    class: src/apps/Core/controllers/http/User/RegisterPostController
-    arguments: ["@Shared.CommandBus"]
+  Apps.Core.Middlewares.AuthMiddleware:
+    class: src/apps/Core/middleware/AuthMiddleware
+    arguments: ["@Shared.TokenDecoder"]
 
-  Apps.Core.Controllers.UserDeleteController:
-    class: src/apps/Core/controllers/http/User/UserDeleteController
+  Apps.Core.Controllers.UserPostController:
+    class: src/apps/Core/controllers/http/User/UserPostController
     arguments: ["@Shared.CommandBus"]
-
-  Apps.Core.Controllers.UserRolePatchController:
-    class: src/apps/Core/controllers/http/User/UserRolePatchController
-    arguments: ["@Shared.CommandBus"]
-
-  Apps.Core.Controllers.MyselfGetController:
-    class: src/apps/Core/controllers/http/User/MyselfGetController
-    arguments: ["@Shared.QueryBus", "@Shared.TokenDecoder"]
 
   Apps.Core.Controllers.UsersGetController:
     class: src/apps/Core/controllers/http/User/UsersGetController
     arguments: ["@Shared.QueryBus"]
 
-  Apps.Core.Controllers.UserGetController:
-    class: src/apps/Core/controllers/http/User/UserGetController
+  Apps.Core.Controllers.UserGetByIdController:
+    class: src/apps/Core/controllers/http/User/UserGetByIdController
     arguments: ["@Shared.QueryBus"]
-  
+
+  Apps.Core.Controllers.UserDeletePatchController:
+    class: src/apps/Core/controllers/http/User/UserDeletePatchController
+    arguments: ["@Shared.CommandBus"]
+
+  Apps.Core.Controllers.UserPatchNameController:
+    class: src/apps/Core/controllers/http/User/UserPatchNameController
+    arguments: ["@Shared.CommandBus"]
+
+  Apps.Core.Controllers.UserPatchPasswordController:
+    class: src/apps/Core/controllers/http/User/UserPatchPasswordController
+    arguments: ["@Shared.CommandBus"]
+
+  Apps.Core.Controllers.UserPatchPhoneController:
+    class: src/apps/Core/controllers/http/User/UserPatchPhoneController
+    arguments: ["@Shared.CommandBus"]
+
   Apps.Core.Controllers.SocketHealthController:
     class: src/apps/Core/controllers/socket/healthController
     arguments: []
-  
-  Apps.Core.Controllers.UserPasswordPatchController:
-    class: src/apps/Core/controllers/http/User/UserPasswordPatchController
-    arguments: ["@Shared.CommandBus"]
+
+  Apps.Core.Controllers.UserLoginPostController:
+    class: src/apps/Core/controllers/http/User/UserLoginPostController
+    arguments: ["@Shared.QueryBus"]
