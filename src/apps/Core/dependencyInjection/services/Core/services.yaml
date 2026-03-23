@@ -1,0 +1,64 @@
+services:
+  User.Repository:
+    class: src/Contexts/Core/User/infrastructure/persistence/TypeOrmUserRepository
+    arguments: ["@Shared.ORM.Connection"]
+
+  User.FindByCriteria.FinderByCriteria:
+    class: src/Contexts/Core/User/application/FindByCriteria/FinderByCriteria
+    arguments: ['@User.Repository']
+
+  User.FindByCriteria.FindUsersByCriteriaQueryHandler:
+    class: src/Contexts/Core/User/application/FindByCriteria/FindUsersByCriteriaQueryHandler
+    arguments: ['@User.FindByCriteria.FinderByCriteria']
+    tags:
+      - { name: "queryHandler" }
+
+  User.FindById.FinderById:
+    class: src/Contexts/Core/User/application/FindById/FinderById
+    arguments: ['@User.Repository']
+
+  User.FindById.FindUserByIdQueryHandler:
+    class: src/Contexts/Core/User/application/FindById/FindUserByIdQueryHandler
+    arguments: ['@User.FindById.FinderById']
+    tags:
+      - { name: "queryHandler" }
+
+  User.Create.Creator:
+    class: src/Contexts/Core/User/application/Create/Creator
+    arguments: ['@User.Repository']
+
+  User.Create.CreateUserCommandHandler:
+    class: src/Contexts/Core/User/application/Create/CreateUserCommandHandler
+    arguments: ["@User.Create.Creator"]
+    tags:
+      - { name: "commandHandler" }
+
+  User.UpdateRole.Updater:
+    class: src/Contexts/Core/User/application/UpdateRole/Updater
+    arguments: ['@User.Repository']
+
+  User.UpdateRole.UpdateRoleCommandHandler:
+    class: src/Contexts/Core/User/application/UpdateRole/UpdateRoleCommandHandler
+    arguments: ["@User.UpdateRole.Updater"]
+    tags:
+      - { name: "commandHandler" }
+
+  User.Delete.Deleter:
+    class: src/Contexts/Core/User/application/Delete/Deleter
+    arguments: ['@User.Repository']
+
+  User.Delete.DeleteUserCommandHandler:
+    class: src/Contexts/Core/User/application/Delete/DeleteUserCommandHandler
+    arguments: ["@User.Delete.Deleter"]
+    tags:
+      - { name: "commandHandler" }
+
+  User.UpdatePassword.Updater:
+    class: src/Contexts/Core/User/application/UpdatePassword/Updater
+    arguments: ['@User.Repository']
+
+  User.UpdatePassword.UpdatePasswordCommandHandler:
+    class: src/Contexts/Core/User/application/UpdatePassword/UpdatePasswordCommandHandler
+    arguments: ["@User.UpdatePassword.Updater"]
+    tags:
+      - { name: "commandHandler" }
