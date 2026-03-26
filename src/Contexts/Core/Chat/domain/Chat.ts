@@ -13,9 +13,9 @@ export class Chat extends AggregateRoot {
     constructor(
         readonly id: Id,
         readonly name: Name,
-        readonly description: Description,
+        readonly description: Nullable<Description>,
         readonly isGroup: IsGroup,
-        readonly adminId: AdminId,
+        readonly adminId: Nullable<AdminId>,
         readonly createdAt: CreatedAt,
         readonly updatedAt: UpdatedAt,
         readonly deletedAt: Nullable<DeletedAt>
@@ -26,9 +26,9 @@ export class Chat extends AggregateRoot {
     static create(
         id: Id,
         name: Name,
-        description: Description,
+        description: Nullable<Description>,
         isGroup: IsGroup,
-        adminId: AdminId,
+        adminId: Nullable<AdminId>,
     ): Chat {
         return new Chat(
             id,

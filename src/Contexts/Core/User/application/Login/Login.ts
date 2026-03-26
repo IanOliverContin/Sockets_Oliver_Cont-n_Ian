@@ -1,5 +1,4 @@
 import { UserRepository } from "../../domain/UserRepository";
-import { TokenGenerator } from "@Shared/domain/TokenGenerator/TokenGenerator";
 import { User } from "../../domain/User";
 import { Criteria } from "@Shared/domain/Criteria/Criteria";
 import { Filters } from "@Shared/domain/Criteria/Filters";
@@ -11,23 +10,20 @@ import { Password } from "@Core/User/domain/ValueObjects/Password";
 
 export class Login {
     constructor(
-        private readonly repository: UserRepository,
-        private readonly tokenGenerator: TokenGenerator
+        private readonly repository: UserRepository
     ) { }
 
     async run(
         phone: Phone,
         password: Password
-    ): Promise<string> {
+    ): Promise<User> {
         const user = await this.findByPhone(phone.valueOf())
 
         if (!user) throw new PhoneNotRegistered(phone.valueOf())
 
         if (!user.password.compare(password.valueOf())) throw new InvalidCredentialsError()
 
-        const token = await this.tokenGenerator.generate({ id: user.id.valueOf() })
-
-        return token
+        return user
     }
 
     private async findByPhone(phone: string): Promise<User | undefined> {

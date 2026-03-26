@@ -37,4 +37,4 @@ services:
 
   Apps.Core.Controllers.UserLoginPostController:
     class: src/apps/Core/controllers/http/User/UserLoginPostController
-    arguments: ["@Shared.QueryBus"]
+    arguments: ["@Shared.QueryBus", "@Shared.TokenGenerator"]

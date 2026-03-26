@@ -1,5 +1,6 @@
 export type TokenData = {
     id: string;
+    phone: string;
 }
 
 export interface TokenGenerator {

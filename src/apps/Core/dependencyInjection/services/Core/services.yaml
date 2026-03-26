@@ -83,7 +83,7 @@ services:
   # --- Login ---
   User.Login:
     class: src/Contexts/Core/User/application/Login/Login
-    arguments: ["@User.Repository", "@Shared.TokenGenerator"]
+    arguments: ["@User.Repository"]
 
   User.Login.LoginQueryHandler:
     class: src/Contexts/Core/User/application/Login/LoginQueryHandler
