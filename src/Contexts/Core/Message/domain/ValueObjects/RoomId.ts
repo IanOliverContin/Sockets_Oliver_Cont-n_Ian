@@ -1,3 +1,3 @@
 import { SharedRoomId } from "@Shared/domain/SharedValueObjects/Room/SharedRoomId";
 
-export class Id extends SharedRoomId { }
+export class RoomId extends SharedRoomId { }

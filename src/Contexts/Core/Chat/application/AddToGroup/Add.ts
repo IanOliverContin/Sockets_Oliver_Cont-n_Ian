@@ -48,7 +48,7 @@ export class Add {
                 ])
             ]))
 
-            if (user.response.length === 0) throw new UserNotFound(phone.valueOf())
+            if (user.response.length === 0) throw new UserNotFound()
 
             this.commandBus.dispatch(new CreateRoomCommand(
                 v4(),

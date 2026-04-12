@@ -1,10 +1,10 @@
-import { Id } from '@Core/User/domain/ValueObjects/Id'
-import { Name } from '@Core/User/domain/ValueObjects/Name'
+import { Id } from '@Core/Chat/domain/ValueObjects/Id'
+import { Name } from '@Core/Chat/domain/ValueObjects/Name'
 import { ValueObjectTransformer } from '@Shared/domain/ValueObjects/ValueObjectTransformer'
 import { EntitySchema } from 'typeorm'
-import { CreatedAt } from '@Core/User/domain/ValueObjects/CreatedAt'
-import { UpdatedAt } from '@Core/User/domain/ValueObjects/UpdatedAt'
-import { DeletedAt } from '@Core/User/domain/ValueObjects/DeletedAt'
+import { CreatedAt } from '@Core/Chat/domain/ValueObjects/CreatedAt'
+import { UpdatedAt } from '@Core/Chat/domain/ValueObjects/UpdatedAt'
+import { DeletedAt } from '@Core/Chat/domain/ValueObjects/DeletedAt'
 import { AdminId } from '@Core/Chat/domain/ValueObjects/AdminId'
 import { Description } from '@Core/Chat/domain/ValueObjects/Description'
 import { IsGroup } from '@Core/Chat/domain/ValueObjects/IsGroup'
@@ -22,6 +22,7 @@ export const ChatSchema = new EntitySchema<Chat>({
         },
         name: {
             type: 'varchar',
+            nullable: true,
             transformer: ValueObjectTransformer(Name)
         },
         description: {

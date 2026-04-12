@@ -1,9 +1,11 @@
 services:
+  # =========================================================================
+  # USER CONTEXT
+  # =========================================================================
   User.Repository:
     class: src/Contexts/Core/User/infrastructure/persistence/TypeOrmUserRepository
     arguments: ["@Shared.ORM.Connection"]
 
-  # --- Find By Criteria ---
   User.FindByCriteria.Finder:
     class: src/Contexts/Core/User/application/FindByCriteria/Finder
     arguments: ["@User.Repository"]
@@ -14,7 +16,6 @@ services:
     tags:
       - { name: "queryHandler" }
 
-  # --- Find By Id ---
   User.FindUserById.Finder:
     class: src/Contexts/Core/User/application/FindUserById/Finder
     arguments: ["@User.Repository"]
@@ -25,7 +26,6 @@ services:
     tags:
       - { name: "queryHandler" }
 
-  # --- Create ---
   User.Create.Creator:
     class: src/Contexts/Core/User/application/Create/Creator
     arguments: ["@User.Repository"]
@@ -36,18 +36,16 @@ services:
     tags:
       - { name: "commandHandler" }
 
-  # --- Delete ---
   User.Delete.Deleter:
     class: src/Contexts/Core/User/application/Delete/Deleter
     arguments: ["@User.Repository"]
 
   User.Delete.DeleteUserCommandHandler:
-    class: src/Contexts/Core/User/application/Delete/DeleteUserCommandHanlder
+    class: src/Contexts/Core/User/application/Delete/DeleteUserCommandHandler
     arguments: ["@User.Delete.Deleter"]
     tags:
       - { name: "commandHandler" }
 
-  # --- Update Name ---
   User.UpdateName.Updater:
     class: src/Contexts/Core/User/application/UpdateName/Updater
     arguments: ["@User.Repository"]
@@ -58,7 +56,6 @@ services:
     tags:
       - { name: "commandHandler" }
 
-  # --- Update Password ---
   User.UpdatePassword.Updater:
     class: src/Contexts/Core/User/application/UpdatePassword/Updater
     arguments: ["@User.Repository"]
@@ -69,18 +66,16 @@ services:
     tags:
       - { name: "commandHandler" }
 
-  # --- Update Phone ---
   User.UpdatePhone.Updater:
     class: src/Contexts/Core/User/application/UpdatePhone/Updater
     arguments: ["@User.Repository"]
 
   User.UpdatePhone.UpdateUserPhoneCommandHandler:
-    class: src/Contexts/Core/User/application/UpdatePhone/UpdateUserPhoneCommandHanlder
+    class: src/Contexts/Core/User/application/UpdatePhone/UpdateUserPhoneCommandHandler
     arguments: ["@User.UpdatePhone.Updater"]
     tags:
       - { name: "commandHandler" }
 
-  # --- Login ---
   User.Login:
     class: src/Contexts/Core/User/application/Login/Login
     arguments: ["@User.Repository"]
@@ -90,3 +85,147 @@ services:
     arguments: ["@User.Login"]
     tags:
       - { name: "queryHandler" }
+
+  # =========================================================================
+  # CHAT CONTEXT
+  # =========================================================================
+  Chat.Repository:
+    class: src/Contexts/Core/Chat/infrastructure/TypeOrmChatRepository
+    arguments: ["@Shared.ORM.Connection"]
+
+  Chat.FindChatById.Finder:
+    class: src/Contexts/Core/Chat/application/FindById/Finder
+    arguments: ["@Chat.Repository"]
+
+  Chat.FindChatById.FindChatByIdQueryHandler:
+    class: src/Contexts/Core/Chat/application/FindById/FindChatByIdQueryHandler
+    arguments: ["@Chat.FindChatById.Finder"]
+    tags:
+      - { name: "queryHandler" }
+
+  Chat.FindByCriteria.Finder:
+    class: src/Contexts/Core/Chat/application/FindByCriteria/Finder
+    arguments: ["@Chat.Repository"]
+
+  Chat.FindByCriteria.FindChatByCriteriaQueryHandler:
+    class: src/Contexts/Core/Chat/application/FindByCriteria/FindChatByCriteriaQueryHandler
+    arguments: ["@Chat.FindByCriteria.Finder"]
+    tags:
+      - { name: "queryHandler" }
+
+  Chat.Create.Creator:
+    class: src/Contexts/Core/Chat/application/Creator/Creator
+    arguments: ["@Chat.Repository", "@Shared.CommandBus", "@Shared.QueryBus"]
+
+  Chat.Create.CreateChatCommandHandler:
+    class: src/Contexts/Core/Chat/application/Creator/CreateChatCommandHandler
+    arguments: ["@Chat.Create.Creator"]
+    tags:
+      - { name: "commandHandler" }
+
+  Chat.Delete.Deleter:
+    class: src/Contexts/Core/Chat/application/Delete/Deleter
+    arguments: ["@Chat.Repository", "@Shared.QueryBus", "@Shared.CommandBus"]
+
+  Chat.Delete.DeleteChatCommandHandler:
+    class: src/Contexts/Core/Chat/application/Delete/DeleteChatCommandHandler
+    arguments: ["@Chat.Delete.Deleter"]
+    tags:
+      - { name: "commandHandler" }
+
+  Chat.AddToGroup.Add:
+    class: src/Contexts/Core/Chat/application/AddToGroup/Add
+    arguments: ["@Chat.Repository", "@Shared.CommandBus", "@Shared.QueryBus"]
+
+  Chat.AddToGroup.AddToGroupCommandHandler:
+    class: src/Contexts/Core/Chat/application/AddToGroup/AddToGroupCommandHandler
+    arguments: ["@Chat.AddToGroup.Add"]
+    tags:
+      - { name: "commandHandler" }
+
+  Chat.LeaveGroup.Leaver:
+    class: src/Contexts/Core/Chat/application/LeaveGroup/Leaver
+    arguments: ["@Chat.Repository", "@Shared.QueryBus", "@Shared.CommandBus"]
+
+  Chat.LeaveGroup.LeaveGroupCommandHandler:
+    class: src/Contexts/Core/Chat/application/LeaveGroup/LeaveGroupCommandHandler
+    arguments: ["@Chat.LeaveGroup.Leaver"]
+    tags:
+      - { name: "commandHandler" }
+
+  Chat.UpdateName.Updater:
+    class: src/Contexts/Core/Chat/application/UpdateName/Updater
+    arguments: ["@Chat.Repository"]
+
+  Chat.UpdateName.UpdateChatNameCommandHandler:
+    class: src/Contexts/Core/Chat/application/UpdateName/UpdateChatNameCommandHandler
+    arguments: ["@Chat.UpdateName.Updater"]
+    tags:
+      - { name: "commandHandler" }
+
+  Chat.UpdateDescription.Updater:
+    class: src/Contexts/Core/Chat/application/UpdateDescription/Updater
+    arguments: ["@Chat.Repository"]
+
+  Chat.UpdateDescription.UpdateChatDescriptionCommandHandler:
+    class: src/Contexts/Core/Chat/application/UpdateDescription/UpdateChatDescriptionCommandHandler
+    arguments: ["@Chat.UpdateDescription.Updater"]
+    tags:
+      - { name: "commandHandler" }
+
+  Chat.UpdateAdminId.Updater:
+    class: src/Contexts/Core/Chat/application/UpdateAdminId/Updater
+    arguments: ["@Chat.Repository"]
+
+  Chat.UpdateAdminId.UpdateChatAdminIdCommandHandler:
+    class: src/Contexts/Core/Chat/application/UpdateAdminId/UpdateChatAdminIdCommandHandler
+    arguments: ["@Chat.UpdateAdminId.Updater"]
+    tags:
+      - { name: "commandHandler" }
+
+  # =========================================================================
+  # ROOM CONTEXT
+  # =========================================================================
+  Room.Repository:
+    class: src/Contexts/Core/Room/infrastructure/TypeOrmRoomRepository
+    arguments: ["@Shared.ORM.Connection"]
+
+  Room.FindRoomById.Finder:
+    class: src/Contexts/Core/Room/application/FindById/Finder
+    arguments: ["@Room.Repository"]
+
+  Room.FindRoomById.FindRoomByIdQueryHandler:
+    class: src/Contexts/Core/Room/application/FindById/FindRoomByIdQueryHandler
+    arguments: ["@Room.FindRoomById.Finder"]
+    tags:
+      - { name: "queryHandler" }
+
+  Room.FindByCriteria.Finder:
+    class: src/Contexts/Core/Room/application/FindByCriteria/Finder
+    arguments: ["@Room.Repository"]
+
+  Room.FindByCriteria.FindRoomByCriteriaQueryHandler:
+    class: src/Contexts/Core/Room/application/FindByCriteria/FindRoomByCriteriaQueryHandler
+    arguments: ["@Room.FindByCriteria.Finder"]
+    tags:
+      - { name: "queryHandler" }
+
+  Room.Create.Creator:
+    class: src/Contexts/Core/Room/application/Create/Creator
+    arguments: ["@Room.Repository", "@Shared.QueryBus"]
+
+  Room.Create.CreateRoomCommandHandler:
+    class: src/Contexts/Core/Room/application/Create/CreateRoomCommandHandler
+    arguments: ["@Room.Create.Creator"]
+    tags:
+      - { name: "commandHandler" }
+
+  Room.Delete.Deleter:
+    class: src/Contexts/Core/Room/application/Delete/Deleter
+    arguments: ["@Room.Repository"]
+
+  Room.Delete.DeleteRoomCommandHandler:
+    class: src/Contexts/Core/Room/application/Delete/DeleteRoomCommandHandler
+    arguments: ["@Room.Delete.Deleter"]
+    tags:
+      - { name: "commandHandler" }

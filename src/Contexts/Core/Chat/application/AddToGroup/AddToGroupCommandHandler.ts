@@ -4,20 +4,20 @@ import { Command } from "@Shared/domain/CommandBus/Command";
 import { Add } from "./Add";
 import { Id } from "@Core/Chat/domain/ValueObjects/Id";
 import { AdminId } from "@Core/Chat/domain/ValueObjects/AdminId";
-import { Phone } from "@Core/Chat/domain/ValueObjects/Phone";
+import { Phone } from "@Core/User/domain/ValueObjects/Phone";
 
 export class AddToGroupCommandHandler implements CommandHandler<AddToGroupCommand> {
-    constructor(private readonly add: Add) { }
+    constructor(private readonly adder: Add) { }
 
     subscribedTo(): Command {
         return AddToGroupCommand
     }
 
-    async handle(data: AddToGroupCommand): Promise<void> {
-        await this.add.run(
-            new Id(data.id),
-            new AdminId(data.adminId),
-            data.phones.map((phone) => new Phone(phone))
+    async handle(command: AddToGroupCommand): Promise<void> {
+        await this.adder.run(
+            new Id(command.id),
+            new AdminId(command.adminId),
+            command.phones.map(phone => new Phone(phone))
         )
     }
 }

@@ -3,7 +3,7 @@ import { QueryResponse } from '@Shared/domain/QueryBus/QueryResponse'
 
 export type ChatResponseBody = {
     readonly id: string
-    readonly name: string
+    readonly name: string | null
     readonly description: string | null
     readonly isGroup: boolean
     readonly adminId: string | null
@@ -18,7 +18,7 @@ export class ChatResponse implements QueryResponse<ChatResponseBody> {
     constructor(chat: Chat) {
         this.response = {
             id: chat.id.valueOf(),
-            name: chat.name.valueOf(),
+            name: chat.name?.valueOf() ?? null,
             description: chat.description?.valueOf() ?? null,
             isGroup: chat.isGroup.valueOf(),
             adminId: chat.adminId?.valueOf() ?? null,

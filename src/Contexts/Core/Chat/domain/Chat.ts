@@ -12,7 +12,7 @@ import { Nullable } from "@Shared/domain/Nullable";
 export class Chat extends AggregateRoot {
     constructor(
         readonly id: Id,
-        readonly name: Name,
+        readonly name: Nullable<Name>,
         readonly description: Nullable<Description>,
         readonly isGroup: IsGroup,
         readonly adminId: Nullable<AdminId>,
@@ -25,7 +25,7 @@ export class Chat extends AggregateRoot {
 
     static create(
         id: Id,
-        name: Name,
+        name: Nullable<Name>,
         description: Nullable<Description>,
         isGroup: IsGroup,
         adminId: Nullable<AdminId>,
@@ -42,7 +42,7 @@ export class Chat extends AggregateRoot {
         )
     }
 
-    updateName(name: Name): Chat {
+    updateName(name: Nullable<Name>): Chat {
         return new Chat(
             this.id,
             name,

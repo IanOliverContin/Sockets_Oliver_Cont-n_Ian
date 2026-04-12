@@ -1,0 +1,18 @@
+User,
+chat,
+Room (relacional entre user y chat),
+Notification, (con user id y chat id)
+Message, (con user id y chat id, room id?):
+
+id,
+chatId,
+userId
+roomId?,
+content,
+status,
+createdAt,
+updatedAt,
+deletedAt
+
+Reaction, (con user id y message id)
+ReadReceipt, (con user id y message id)

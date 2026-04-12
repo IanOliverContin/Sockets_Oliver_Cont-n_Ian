@@ -4,8 +4,8 @@ export class UserNotFound extends DomainError {
     protected code: string = 'user-not-found'
     protected message: string
 
-    constructor(phone: string) {
+    constructor() {
         super()
-        this.message = `User with phone ${phone} not found`
+        this.message = `User Not Found`
     }
 }

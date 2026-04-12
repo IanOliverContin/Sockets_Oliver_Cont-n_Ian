@@ -1,12 +1,11 @@
 import { ChatRepository } from "@Core/Chat/domain/ChatRepository";
-import { Id } from "@Core/User/domain/ValueObjects/Id";
+import { Id } from "@Core/Chat/domain/ValueObjects/Id";
 import { QueryBus } from "@Shared/domain/QueryBus/QueryBus";
 import { CommandBus } from "@Shared/domain/CommandBus/CommandBus";
 import { ChatNotFound } from "@Core/Chat/domain/Errors/ChatNotFound";
 import { FindRoomByCriteriaQuery } from "@Core/Room/application/FindByCriteria/FindRoomByCriteriaQuery";
 import { RoomCollectionResponse } from "@Core/Room/application/RoomCollectionResponse";
 import { DeleteRoomCommand } from "@Core/Room/application/Delete/DeleteRoomCommand";
-import { AdminId } from "@Core/Chat/domain/ValueObjects/AdminId";
 import { UserNotAdmin } from "@Core/Chat/domain/Errors/UserNotAdmin";
 
 export class Deleter {
@@ -16,24 +15,20 @@ export class Deleter {
         private readonly commandBus: CommandBus
     ) { }
 
-    async run(id: Id, adminId: AdminId): Promise<void> {
+    async run(id: Id, userId: string): Promise<void> {
 
         const chat = await this.repository.find(id)
 
         if (!chat) throw new ChatNotFound(id.valueOf())
 
-        if (chat.isGroup.valueOf()) {
-            if (chat.adminId?.valueOf() !== adminId.valueOf()) throw new UserNotAdmin(adminId.valueOf())
-
-            await this.deleteRooms(id)
-        } else {
-            await this.deleteRooms(id)
+        if (chat.isGroup.valueOf() && chat.adminId?.valueOf() !== userId) {
+            throw new UserNotAdmin(userId)
         }
 
-        chat.delete()
+        await this.deleteRooms(id)
 
-        await this.repository.persist(chat)
-
+        const deletedChat = chat.delete()
+        await this.repository.persist(deletedChat)
     }
 
     async deleteRooms(chatId: Id): Promise<void> {
@@ -45,9 +40,13 @@ export class Deleter {
             ])
         ]))
 
-        rooms.response.map(room => {
-            this.commandBus.dispatch(new DeleteRoomCommand(room.id))
-        })
+        await Promise.all(
+            rooms.response.map(room =>
+                this.commandBus.dispatch(new DeleteRoomCommand(room.id))
+            )
+        )
+
 
     }
 }
+
